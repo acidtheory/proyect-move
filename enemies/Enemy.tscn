@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://b3ejlr2kfhsa4"]
+
+[ext_resource type="Script" uid="uid://c56bp24h0vwvn" path="res://enemies/enemy.gd" id="1_43lb5"]
+[ext_resource type="Texture2D" uid="uid://w8gjtj82ay88" path="res://enemies/39166129-enemy-red-stamp-text-on-white.jpg" id="1_xkw1x"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_43lb5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8tr1a"]
+albedo_texture = ExtResource("1_xkw1x")
+uv1_offset = Vector3(1.505, 0.515, 0.505)
+uv1_triplanar = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jfak0"]
+
+[node name="Enemy" type="CharacterBody3D" unique_id=715649026]
+script = ExtResource("1_43lb5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=355146171]
+mesh = SubResource("BoxMesh_43lb5")
+surface_material_override/0 = SubResource("StandardMaterial3D_8tr1a")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1596429113]
+shape = SubResource("BoxShape3D_jfak0")

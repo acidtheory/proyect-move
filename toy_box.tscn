@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://btcasuxejncv1"]
 
 [ext_resource type="PackedScene" uid="uid://b1anhhy354wpl" path="res://pj/character_body_3d.tscn" id="1_8nbwm"]
+[ext_resource type="PackedScene" uid="uid://b3ejlr2kfhsa4" path="res://enemies/Enemy.tscn" id="1_by3xe"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8nbwm"]
 size = Vector3(1, 0.01, 1)
@@ -8,6 +9,9 @@ size = Vector3(1, 0.01, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_by3xe"]
 
 [node name="ToyBox" type="Node3D" unique_id=304246059]
+
+[node name="Enemy" parent="." unique_id=715649026 instance=ExtResource("1_by3xe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.712816, 1.2256982, 7.400882)
 
 [node name="Player" parent="." unique_id=1399959414 instance=ExtResource("1_8nbwm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.486136, 0)
