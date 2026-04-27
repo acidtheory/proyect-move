@@ -1,31 +1,27 @@
 [gd_scene format=3 uid="uid://b1anhhy354wpl"]
 
-[ext_resource type="Texture2D" uid="uid://bc1nrwgwvrma8" path="res://pj/icon.svg" id="1_k1tai"]
 [ext_resource type="Script" uid="uid://cht1xsu8svoi0" path="res://pj/character_body_3d.gd" id="1_uqsb8"]
+[ext_resource type="PackedScene" uid="uid://bxr1sctuqbl1g" path="res://pj/model/personaje_con_animaciones.tscn" id="2_uqsb8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k1tai"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_uqsb8"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1yfuo"]
-albedo_texture = ExtResource("1_k1tai")
-uv1_scale = Vector3(0.99, 0.99, 0.99)
-uv1_offset = Vector3(1.5, -0.495, 0.495)
-uv1_triplanar = true
+size = Vector3(0.53446484, 1.9765015, 0.3688488)
 
 [node name="Player" type="CharacterBody3D" unique_id=1944581078 node_paths=PackedStringArray("mesh")]
 floor_constant_speed = true
 floor_block_on_wall = false
 script = ExtResource("1_uqsb8")
-mesh = NodePath("MeshInstance3D")
+mesh = NodePath("Personaje con animaciones")
+
+[node name="Personaje con animaciones" parent="." unique_id=950769899 instance=ExtResource("2_uqsb8")]
+transform = Transform3D(-0.3, 0, -2.6226834e-08, 0, 0.3, 0, 2.6226834e-08, 0, -0.3, 0, 0.02, 0)
 
 [node name="CameraPivot" type="Node3D" parent="." unique_id=1199838907]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot" unique_id=1791631044]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.08, 0, 0)
 spring_length = 4.5
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D" unique_id=1313897891]
@@ -36,9 +32,6 @@ fov = 80.0
 [node name="RayCast3D" type="RayCast3D" parent="CameraPivot/SpringArm3D/Camera3D" unique_id=616516749]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1152542772]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01736784, 0.98825073, -0.020289421)
 shape = SubResource("BoxShape3D_k1tai")
 debug_color = Color(2.5027991e-06, 0.5920763, 0.7452832, 0.41960785)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1129567342]
-mesh = SubResource("BoxMesh_uqsb8")
-surface_material_override/0 = SubResource("StandardMaterial3D_1yfuo")
