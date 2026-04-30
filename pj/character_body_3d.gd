@@ -38,12 +38,12 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("aim"):
 		_spring_arm.spring_length = move_toward(_spring_arm.spring_length, aim_length, 0.15)
 		_camera.fov = move_toward(_camera.fov, aim_fov, 2.5)
-		_spring_arm.position = _spring_arm.position.move_toward(aim_position, 0.02)
+		_spring_arm.position = _spring_arm.position.move_toward(aim_position, 0.02 * delta * 60)
 		current_mouse_sensitivity = aim_sensitivity
 	else:
 		_spring_arm.spring_length = move_toward(_spring_arm.spring_length, default_length, 0.15)
 		_camera.fov = move_toward(_camera.fov, default_fov, 2.5)
-		_spring_arm.position = _spring_arm.position.move_toward(default_position, 0.02)
+		_spring_arm.position = _spring_arm.position.move_toward(default_position, 0.02 * delta * 60)
 		current_mouse_sensitivity = mouse_sensitivity
 	var input_direction := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := Vector3(input_direction.x,0,input_direction.y).rotated(Vector3(0,1,0),_camera_pivot.rotation.y)
