@@ -1,10 +1,19 @@
 [gd_scene format=3 uid="uid://b3ejlr2kfhsa4"]
 
 [ext_resource type="Script" uid="uid://c56bp24h0vwvn" path="res://enemies/enemy.gd" id="1_43lb5"]
-[ext_resource type="PackedScene" uid="uid://bxr1sctuqbl1g" path="res://pj/model/personaje_con_animaciones.tscn" id="2_43lb5"]
+[ext_resource type="PackedScene" uid="uid://bvskgl6kwvr07" path="res://enemies/model/Personaje con animaciones.glb" id="2_43lb5"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jfak0"]
 size = Vector3(0.6586151, 1.9577637, 0.36743164)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8tr1a"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0.047058824)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_43lb5"]
+next_pass = SubResource("StandardMaterial3D_8tr1a")
+albedo_color = Color(1, 0.13333334, 1, 1)
 
 [node name="Enemy" type="CharacterBody3D" unique_id=715649026]
 script = ExtResource("1_43lb5")
@@ -13,5 +22,9 @@ script = ExtResource("1_43lb5")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00046539307, 0.9686279, -0.016235352)
 shape = SubResource("BoxShape3D_jfak0")
 
-[node name="Personaje con animaciones" parent="." unique_id=950769899 instance=ExtResource("2_43lb5")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+[node name="Personaje con animaciones" parent="." unique_id=562842463 instance=ExtResource("2_43lb5")]
+
+[node name="Personaje" parent="Personaje con animaciones/Armature/Skeleton3D" parent_id_path=PackedInt32Array(562842463, 1198248380) index="0" unique_id=198226148]
+surface_material_override/0 = SubResource("StandardMaterial3D_43lb5")
+
+[editable path="Personaje con animaciones"]
