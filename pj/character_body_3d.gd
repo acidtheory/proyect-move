@@ -40,18 +40,17 @@ func _physics_process(delta: float) -> void:
 		velocity.y = jump_velocity
 	if Input.is_action_pressed("run") and Input.is_action_pressed("move_forward") and not Input.is_action_pressed("aim") and not stamina_cooldown and current_stamina > 0:
 		speed = 9
-		current_stamina -= 0.5
+		current_stamina -= 0.45
 		stamina_regen_cooldown = true
 		if current_stamina <= 0:
 			stamina_cooldown = true
-			
 	else:
 		speed = 5
 		if not stamina_regen_cooldown:
-			current_stamina += 0.3
+			current_stamina += 0.38
 	current_stamina = clamp(current_stamina, 0, 100)
 	if Input.is_action_just_released("run"):
-		await get_tree().create_timer(2).timeout
+		await get_tree().create_timer(1.5).timeout
 		stamina_regen_cooldown = false
 	if Input.is_action_pressed("aim"):
 		_spring_arm.spring_length = move_toward(_spring_arm.spring_length, aim_length, 0.15)
@@ -78,7 +77,6 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 #camera weight
 func _process(delta: float) -> void:
-	print(stamina_regen_cooldown)
 	_life_bar.value = current_health
 	_stamina_bar.value = current_stamina
 	if current_stamina >= 30:
