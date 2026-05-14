@@ -5,6 +5,7 @@ extends CharacterBody3D
 @onready var _camera := %Camera3D as Camera3D
 @onready var _camera_pivot := %CameraPivot as Node3D
 @onready var _spring_arm := %SpringArm3D as SpringArm3D
+@onready var _attack_hitbox = $"Animation personaje/Armature/Skeleton3D/BoneAttachment3D2/AttackHitbox"
 @export var mesh : Node3D
 @export_range(0.1, 3.0) var mouse_sensitivity : float = 1.8
 @export var current_mouse_sensitivity : float
@@ -52,6 +53,10 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_released("run"):
 		await get_tree().create_timer(1.5).timeout
 		stamina_regen_cooldown = false
+	if Input.is_action_just_pressed("attack"):
+		_attack_hitbox.monitoring = true
+	else:
+		_attack_hitbox.monitoring = false
 	if Input.is_action_pressed("aim"):
 		_spring_arm.spring_length = move_toward(_spring_arm.spring_length, aim_length, 0.15)
 		_camera.fov = move_toward(_camera.fov, aim_fov, 2.5)
@@ -86,3 +91,8 @@ func _input(event: InputEvent) -> void:
 		expected_rotation.x -= event.screen_relative.y * current_mouse_sensitivity * 0.001
 		expected_rotation.x = clampf(expected_rotation.x, -tilt_limit, tilt_limit)
 		expected_rotation.y += -event.screen_relative.x * current_mouse_sensitivity * 0.001
+
+
+func _on_area_3d_body_entered(body: Node3D) -> void:
+	if body is enemy:
+		body.take_damage(25)

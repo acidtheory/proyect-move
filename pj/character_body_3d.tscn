@@ -4,13 +4,16 @@
 [ext_resource type="PackedScene" uid="uid://bjebsrt6kiwdq" path="res://pj/model/Animation personaje.glb" id="2_uqsb8"]
 [ext_resource type="PackedScene" uid="uid://cjukgilx6vc5l" path="res://pj/model/Cuchi loco.glb" id="3_1yfuo"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_1yfuo"]
+size = Vector3(0.23742676, 0.69433594, 0.62683105)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_k1tai"]
 size = Vector3(0.53446484, 1.9765015, 0.3688488)
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_1yfuo"]
 states/Start/position = Vector2(125.6, 99.520004)
 
-[node name="Player" type="CharacterBody3D" unique_id=1944581078 node_paths=PackedStringArray("mesh")]
+[node name="Player" type="CharacterBody3D" unique_id=1944581078 node_paths=PackedStringArray("mesh") groups=["player"]]
 floor_constant_speed = true
 floor_block_on_wall = false
 script = ExtResource("1_uqsb8")
@@ -18,15 +21,27 @@ mesh = NodePath("Animation personaje")
 
 [node name="Animation personaje" parent="." unique_id=722748849 instance=ExtResource("2_uqsb8")]
 
-[node name="BoneAttachment3D" type="BoneAttachment3D" parent="Animation personaje/Armature/Skeleton3D" parent_id_path=PackedInt32Array(722748849, 420064356) index="0" unique_id=2114833904]
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="Animation personaje/Armature/Skeleton3D" parent_id_path=PackedInt32Array(722748849, 62019132) index="0" unique_id=2114833904]
 transform = Transform3D(0.21920858, -0.9525825, 0.2110329, -0.28721422, -0.26971167, -0.9191102, 0.932446, 0.14086527, -0.33271834, -0.881647, 1.5142655, -0.027971178)
 bone_name = "mixamorig_RightHand"
 bone_idx = 28
 
-[node name="Cuchi loco" parent="Animation personaje/Armature/Skeleton3D/BoneAttachment3D" unique_id=91289758 instance=ExtResource("3_1yfuo")]
+[node name="Cuchillo loco" parent="Animation personaje/Armature/Skeleton3D/BoneAttachment3D" unique_id=91289758 instance=ExtResource("3_1yfuo")]
 transform = Transform3D(0.15057723, 0.5372791, 0.82985383, -0.23198687, -0.7967821, 0.5579607, 0.9609933, -0.27653098, 0.0046644243, 0.15703472, 0.17301682, 0.06685376)
 
-[node name="cuchi loco" parent="Animation personaje" index="2" unique_id=226325770]
+[node name="BoneAttachment3D2" type="BoneAttachment3D" parent="Animation personaje/Armature/Skeleton3D" parent_id_path=PackedInt32Array(722748849, 62019132) index="2" unique_id=279230835]
+transform = Transform3D(1, -1.7688628e-11, -8.742278e-08, -1.7695272e-11, -1, -7.536468e-08, -8.742278e-08, 7.536468e-08, -1, 1.24535555e-11, 1.1944379, 0.014604765)
+bone_name = "Ctrl_Hips_Free"
+bone_idx = 55
+
+[node name="AttackHitbox" type="Area3D" parent="Animation personaje/Armature/Skeleton3D/BoneAttachment3D2" unique_id=1650772918]
+monitoring = false
+
+[node name="CollitionShape3D" type="CollisionShape3D" parent="Animation personaje/Armature/Skeleton3D/BoneAttachment3D2/AttackHitbox" unique_id=1152217416]
+transform = Transform3D(1, 0, 3.3457801e-19, -1.1011428e-19, -4.3711385e-08, -0.99999994, 0, 0.99999994, -4.3711385e-08, 0, -0.098, -0.65)
+shape = SubResource("BoxShape3D_1yfuo")
+
+[node name="cuchi loco" parent="Animation personaje" index="2" unique_id=1861368884]
 transform = Transform3D(0.9999998, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0)
 visible = false
 
@@ -80,5 +95,7 @@ size_flags_vertical = 8
 root_node = NodePath("../Animation personaje")
 tree_root = SubResource("AnimationNodeStateMachine_1yfuo")
 anim_player = NodePath("../Animation personaje/AnimationPlayer")
+
+[connection signal="body_entered" from="Animation personaje/Armature/Skeleton3D/BoneAttachment3D2/AttackHitbox" to="." method="_on_area_3d_body_entered"]
 
 [editable path="Animation personaje"]

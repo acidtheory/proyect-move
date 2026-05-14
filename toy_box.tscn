@@ -11,7 +11,7 @@ size = Vector3(1, 0.01, 1)
 [node name="ToyBox" type="Node3D" unique_id=304246059]
 
 [node name="Enemy" parent="." unique_id=715649026 instance=ExtResource("1_by3xe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0459669, 0.20928866, -1.2266053)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7466974, 0.20928866, -10.969577)
 
 [node name="Player" parent="." unique_id=1944581078 instance=ExtResource("1_8nbwm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.486136, 0)
@@ -31,6 +31,30 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 1
 light_energy = 8.236
 light_indirect_energy = 3.353
 spot_range = 23.414
+
+[node name="Enemy2" parent="." unique_id=2145062647 instance=ExtResource("1_by3xe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.90205, 0.20928851, -13.053425)
+
+[node name="Enemy3" parent="." unique_id=226036861 instance=ExtResource("1_by3xe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.681772, 0.20928851, -8.772076)
+
+[node name="Enemy4" parent="." unique_id=627359943 instance=ExtResource("1_by3xe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.315808, 0.20928851, -13.149242)
+
+[node name="Enemy5" parent="." unique_id=1941782794 instance=ExtResource("1_by3xe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.47406912, 0.20928851, -14.968635)
+
+[node name="Enemy6" parent="." unique_id=1248534907 instance=ExtResource("1_by3xe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.621049, 0.20928851, -4.7518535)
+
+[node name="Enemy7" parent="." unique_id=1341924027 instance=ExtResource("1_by3xe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.7579174, 0.20928851, -15.413547)
+
+[node name="Enemy8" parent="." unique_id=953971571 instance=ExtResource("1_by3xe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.670352, 0.20928851, -9.510767)
+
+[node name="Enemy9" parent="." unique_id=663838514 instance=ExtResource("1_by3xe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8757176, 0.20928851, -6.6652126)
 
 [editable path="Player"]
 [editable path="Player/Animation personaje"]
