@@ -5,8 +5,12 @@ extends CharacterBody3D
 @onready var _camera := %Camera3D as Camera3D
 @onready var _camera_pivot := %CameraPivot as Node3D
 @onready var _spring_arm := %SpringArm3D as SpringArm3D
-@onready var _attack_hitbox = $"Animation personaje/Armature/Skeleton3D/BoneAttachment3D2/AttackHitbox"
-@export var mesh : Node3D
+@onready var _knife_model = %"Cuchillo loco"
+@onready var _attack_hitbox_knife = %HitboxKnife
+@onready var _axe_model = %hacha1
+@onready var _mesh : Node3D = $"Animation personaje"
+@onready var _hurt_box = %HurtBox
+@onready var _animation_player = $"Animation personaje/AnimationPlayer"
 @export_range(0.1, 3.0) var mouse_sensitivity : float = 1.8
 @export var current_mouse_sensitivity : float
 @export var aim_sensitivity : float = mouse_sensitivity/3
@@ -21,6 +25,7 @@ var expected_velocity : Vector3 = Vector3(0, 0, 0)
 @export var default_position : Vector3 = Vector3(1.08, 0, 0)
 @export var aim_position : Vector3 = Vector3(0.85, 0, 0)
 
+@export_group("Player stats")
 @export var max_health = 100
 @export var current_health = 100
 @export var speed = 5.0
@@ -29,13 +34,19 @@ var expected_velocity : Vector3 = Vector3(0, 0, 0)
 @export var gravity : float = 1
 @export var max_stamina : float = 100
 @export var current_stamina : float = 100
+var is_running : bool
 var stamina_cooldown : bool = false
 var stamina_regen_cooldown : bool = false
+
+var selected_weapon : int = 1
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed("ui_end"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
 	#soft movement
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
@@ -45,28 +56,39 @@ func _physics_process(delta: float) -> void:
 		stamina_regen_cooldown = true
 		if current_stamina <= 0:
 			stamina_cooldown = true
+		is_running = true
 	else:
 		speed = 5
 		if not stamina_regen_cooldown:
 			current_stamina += 0.38
+		is_running = false
 	current_stamina = clamp(current_stamina, 0, 100)
 	if Input.is_action_just_released("run"):
 		await get_tree().create_timer(1.5).timeout
 		stamina_regen_cooldown = false
-	if Input.is_action_just_pressed("attack"):
-		_attack_hitbox.monitoring = true
+	if Input.is_action_just_pressed("attack") and selected_weapon == 1 and _animation_player.current_animation == "Ataque1":
+		for body in _attack_hitbox_knife.get_overlapping_bodies():
+			if body is enemy:
+				body.take_damage(25)
+	if Input.is_action_just_pressed("attack") and Input.is_action_pressed("aim") and selected_weapon == 2:
+		create_thrown_axe()
+	if Input.is_action_pressed("aim") and selected_weapon == 2:
+		_aim_start(delta)
 	else:
-		_attack_hitbox.monitoring = false
-	if Input.is_action_pressed("aim"):
-		_spring_arm.spring_length = move_toward(_spring_arm.spring_length, aim_length, 0.15)
-		_camera.fov = move_toward(_camera.fov, aim_fov, 2.5)
-		_spring_arm.position = _spring_arm.position.move_toward(aim_position, 0.02 * delta * 60)
-		current_mouse_sensitivity = aim_sensitivity
-	else:
-		_spring_arm.spring_length = move_toward(_spring_arm.spring_length, default_length, 0.15)
-		_camera.fov = move_toward(_camera.fov, default_fov, 2.5)
-		_spring_arm.position = _spring_arm.position.move_toward(default_position, 0.02 * delta * 60)
-		current_mouse_sensitivity = mouse_sensitivity
+		_aim_exit(delta)
+	if Input.is_action_just_pressed("weapon_1"):
+		selected_weapon = 1
+	if Input.is_action_just_pressed("weapon_2"):
+		selected_weapon = 2
+	_axe_model.visible = false
+	_knife_model.visible = false
+	_attack_hitbox_knife = false
+	match selected_weapon:
+		1:
+			_knife_model.visible = true
+			_attack_hitbox_knife = true
+		2:
+			_axe_model.visible = true
 	var input_direction := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := Vector3(input_direction.x,0,input_direction.y).rotated(Vector3(0,1,0),_camera_pivot.rotation.y)
 	_camera_pivot.rotation = _camera_pivot.rotation.move_toward(expected_rotation,delta * camera_weight * _camera_pivot.rotation.distance_to(expected_rotation))
@@ -77,8 +99,10 @@ func _physics_process(delta: float) -> void:
 	expected_velocity.y = velocity.y
 	velocity = velocity.move_toward(expected_velocity, delta * velocity_weight * velocity.distance_to(expected_velocity))
 	#mesh orientation
-	mesh.global_rotation.y = lerp_angle(mesh.global_rotation.y, _camera.global_rotation.y + PI, 0.15)
-	mesh.global_rotation.z = lerp_angle(mesh.global_rotation.z, _camera.global_rotation.z, 0.15)
+	_mesh.global_rotation.y = lerp_angle(_mesh.global_rotation.y, _camera.global_rotation.y + PI, 0.15)
+	_mesh.global_rotation.z = lerp_angle(_mesh.global_rotation.z, _camera.global_rotation.z, 0.15)
+	_hurt_box.global_rotation.y = lerp_angle(_hurt_box.global_rotation.y, _camera.global_rotation.y, 0.15)
+	_hurt_box.global_rotation.z = lerp_angle(_hurt_box.global_rotation.z, _camera.global_rotation.z, 0.15)
 	move_and_slide()
 #camera weight
 func _process(delta: float) -> void:
@@ -86,13 +110,30 @@ func _process(delta: float) -> void:
 	_stamina_bar.value = current_stamina
 	if current_stamina >= 30:
 		stamina_cooldown = false
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		expected_rotation.x -= event.screen_relative.y * current_mouse_sensitivity * 0.001
 		expected_rotation.x = clampf(expected_rotation.x, -tilt_limit, tilt_limit)
 		expected_rotation.y += -event.screen_relative.x * current_mouse_sensitivity * 0.001
 
-
-func _on_area_3d_body_entered(body: Node3D) -> void:
-	if body is enemy:
-		body.take_damage(25)
+func _aim_start(delta):
+	_spring_arm.spring_length = move_toward(_spring_arm.spring_length, aim_length, 0.15)
+	_camera.fov = move_toward(_camera.fov, aim_fov, 2.5)
+	_spring_arm.position = _spring_arm.position.move_toward(aim_position, 0.02 * delta * 60)
+	current_mouse_sensitivity = aim_sensitivity
+func _aim_exit(delta):
+	_spring_arm.spring_length = move_toward(_spring_arm.spring_length, default_length, 0.15)
+	_camera.fov = move_toward(_camera.fov, default_fov, 2.5)
+	_spring_arm.position = _spring_arm.position.move_toward(default_position, 0.02 * delta * 60)
+	current_mouse_sensitivity = mouse_sensitivity
+	
+const axe_scene = preload("res://interactuables/weapons/throwable_axe.tscn")
+func create_thrown_axe():
+	var axe : RigidBody3D = axe_scene.instantiate()
+	var offset = Vector3(0.7, 1.5, 0)
+	get_parent().add_child(axe)
+	axe.position = position + offset.rotated(Vector3(0,1,0),_camera_pivot.rotation.y)
+	axe.rotation.y = _camera_pivot.rotation.y
+	axe.apply_central_force(Vector3(0, 200, -700).rotated(Vector3(0, 1, 0),_camera_pivot.rotation.y).rotated(Vector3(1, 0, 0),_camera_pivot.rotation.x))
+	axe.apply_torque(Vector3(-20, 0, 0).rotated(Vector3(0, 1, 0),_camera_pivot.rotation.y))
