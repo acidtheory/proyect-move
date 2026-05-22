@@ -135,5 +135,5 @@ func create_thrown_axe():
 	get_parent().add_child(axe)
 	axe.position = position + offset.rotated(Vector3(0,1,0),_camera_pivot.rotation.y)
 	axe.rotation.y = _camera_pivot.rotation.y
-	axe.apply_central_force(Vector3(0, 200, -700).rotated(Vector3(0, 1, 0),_camera_pivot.rotation.y).rotated(Vector3(1, 0, 0),_camera_pivot.rotation.x))
+	axe.apply_central_force(Vector3(0, 20, -900).rotated(Vector3(0, 1, 0),_camera_pivot.rotation.y).rotated(Vector3(1, 0, 0),_camera_pivot.rotation.x))
 	axe.apply_torque(Vector3(-20, 0, 0).rotated(Vector3(0, 1, 0),_camera_pivot.rotation.y))

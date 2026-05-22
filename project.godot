@@ -85,3 +85,7 @@ debug={
 
 3d_physics/layer_1="Environment"
 3d_physics/layer_2="Enemy"
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
