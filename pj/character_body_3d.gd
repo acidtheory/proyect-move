@@ -6,7 +6,8 @@ extends CharacterBody3D
 @onready var _camera_pivot := %CameraPivot as Node3D
 @onready var _spring_arm := %SpringArm3D as SpringArm3D
 @onready var _knife_model = %"Cuchillo loco"
-@onready var _attack_hitbox_knife = %HitboxKnife
+@onready var _attack_hitbox_knife := %HitboxKnife
+@onready var _attack_hitbox_axe = %HitboxAxe
 @onready var _axe_model = %hacha1
 @onready var _mesh : Node3D = $"Animation personaje"
 @onready var _hurt_box = %HurtBox
@@ -41,6 +42,7 @@ var stamina_regen_cooldown : bool = false
 var selected_weapon : int = 1
 
 func _ready() -> void:
+	Globals.player = self
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _physics_process(delta: float) -> void:
@@ -68,7 +70,7 @@ func _physics_process(delta: float) -> void:
 		stamina_regen_cooldown = false
 	if Input.is_action_just_pressed("attack") and selected_weapon == 1 and _animation_player.current_animation == "Ataque1":
 		for body in _attack_hitbox_knife.get_overlapping_bodies():
-			if body is enemy:
+			if body is Enemy:
 				body.take_damage(25)
 	if Input.is_action_just_pressed("attack") and Input.is_action_pressed("aim") and selected_weapon == 2:
 		create_thrown_axe()
@@ -82,13 +84,18 @@ func _physics_process(delta: float) -> void:
 		selected_weapon = 2
 	_axe_model.visible = false
 	_knife_model.visible = false
-	_attack_hitbox_knife = false
+	_attack_hitbox_knife.monitoring = false
 	match selected_weapon:
 		1:
 			_knife_model.visible = true
-			_attack_hitbox_knife = true
+			_attack_hitbox_knife.monitoring = true
+			_axe_model.visible = false
+			_attack_hitbox_axe.monitoring = false
 		2:
 			_axe_model.visible = true
+			_attack_hitbox_axe.monitoring = true
+			_knife_model.visible = false
+			_attack_hitbox_knife.monitoring = false
 	var input_direction := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := Vector3(input_direction.x,0,input_direction.y).rotated(Vector3(0,1,0),_camera_pivot.rotation.y)
 	_camera_pivot.rotation = _camera_pivot.rotation.move_toward(expected_rotation,delta * camera_weight * _camera_pivot.rotation.distance_to(expected_rotation))
