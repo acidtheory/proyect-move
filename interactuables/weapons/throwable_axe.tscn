@@ -1,38 +1,41 @@
 [gd_scene format=3 uid="uid://bfctx8akremdc"]
 
 [ext_resource type="PackedScene" uid="uid://cyfkdgoura2au" path="res://assets/models/hacha1.blend" id="1_sy4u1"]
+[ext_resource type="Script" uid="uid://bh0w4kn2nt7ic" path="res://interactuables/weapons/throwable_axe.gd" id="1_x4bxl"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sy4u1"]
 size = Vector3(0.138, 0.393, 0.04096216)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_x4bxl"]
-size = Vector3(0.23210144, 0.4845276, 0.03540039)
+size = Vector3(0.2745781, 0.62546253, 0.03540039)
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_x4bxl"]
-radius = 0.027832031
-height = 0.57398224
+[sub_resource type="BoxShape3D" id="BoxShape3D_c3s73"]
+size = Vector3(0.7, 0.7, 0.7)
 
 [node name="ThrowableAxe" type="RigidBody3D" unique_id=494095464]
+script = ExtResource("1_x4bxl")
+
+[node name="hacha1" parent="." unique_id=960700430 instance=ExtResource("1_sy4u1")]
+transform = Transform3D(-2.6226832e-09, -0.06, 2.6226832e-09, 0, -2.6226832e-09, -0.06, 0.06, -2.6226832e-09, 1.1464113e-16, 0, 0.4534295, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1507468029]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.00096447766, 0.3135504, -0.05170863)
 shape = SubResource("BoxShape3D_sy4u1")
 
-[node name="hacha1" parent="." unique_id=960700430 instance=ExtResource("1_sy4u1")]
-transform = Transform3D(-2.6226832e-09, -0.06, 2.6226832e-09, 0, -2.6226832e-09, -0.06, 0.06, -2.6226832e-09, 1.1464113e-16, 0, 0.4534295, 0)
-
 [node name="Hitbox" type="Area3D" parent="." unique_id=2015296369]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
-visible = false
 collision_layer = 2
-collision_mask = 2
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="Hitbox" unique_id=1716708845]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14430186, 0.41703528, -0.002390802)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07993075, 0.29781693, -0.002390802)
 shape = SubResource("BoxShape3D_x4bxl")
 
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="Hitbox" unique_id=1132185621]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.004008211, 0.24509537, 0.0012540072)
-shape = SubResource("CapsuleShape3D_x4bxl")
+[node name="PickupHitbox" type="Area3D" parent="." unique_id=701224620]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PickupHitbox" unique_id=501103744]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33308068, -0.041149408)
+shape = SubResource("BoxShape3D_c3s73")
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
 
 [editable path="hacha1"]

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://btcasuxejncv1"]
 
+[ext_resource type="PackedScene" uid="uid://b3ejlr2kfhsa4" path="res://enemies/enemy_axe.tscn" id="1_4pysu"]
 [ext_resource type="PackedScene" uid="uid://b1anhhy354wpl" path="res://pj/character_body_3d.tscn" id="1_8nbwm"]
-[ext_resource type="PackedScene" uid="uid://b3ejlr2kfhsa4" path="res://enemies/Enemy.tscn" id="1_by3xe"]
 [ext_resource type="PackedScene" uid="uid://beprgylmpcfkh" path="res://interactuables/scrap.tscn" id="3_4pysu"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_4pysu"]
@@ -17,12 +17,6 @@ albedo_color = Color(0.17254902, 0.13333334, 0.1764706, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_by3xe"]
 material = SubResource("StandardMaterial3D_4pysu")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_4pysu"]
-viewport_path = NodePath("SubViewport")
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_phjgw"]
-viewport_path = NodePath("SubViewport")
-
 [node name="ToyBox" type="Node3D" unique_id=304246059]
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=468713732]
@@ -37,56 +31,47 @@ shape = SubResource("BoxShape3D_8nbwm")
 transform = Transform3D(40, 0, 0, 0, 0.4, 0, 0, 0, 40, 0, 0, 0)
 mesh = SubResource("BoxMesh_by3xe")
 
-[node name="Enemy" parent="." unique_id=715649026 instance=ExtResource("1_by3xe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7466974, 0.20928866, -10.969577)
-
-[node name="Sprite3D" parent="Enemy" index="2" unique_id=2000607842]
-texture = SubResource("ViewportTexture_4pysu")
-
-[node name="LeafFollowTarget" parent="Enemy/CompositorSequence" parent_id_path=PackedInt32Array(715649026, 1025724790) index="0" unique_id=574496903 node_paths=PackedStringArray("target")]
-target = NodePath("../../../Player")
-
-[node name="LeafKillTarget" parent="Enemy/CompositorSequence" parent_id_path=PackedInt32Array(715649026, 1025724790) index="1" unique_id=1319875861 node_paths=PackedStringArray("target")]
-target = NodePath("../../../Player")
+[node name="AxeEnemy" parent="." unique_id=715649026 instance=ExtResource("1_4pysu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.757578, 0.9267173, -10.546936)
 
 [node name="Player" parent="." unique_id=1944581078 instance=ExtResource("1_8nbwm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.23838973, 0)
 
-[node name="Skeleton3D" parent="Player/Animation personaje/Armature" parent_id_path=PackedInt32Array(1944581078, 1894641677, 328862411) index="0" unique_id=1745161259]
-bones/3/rotation = Quaternion(-0.0014855084, 7.188892e-26, 5.700892e-27, 0.9999989)
-bones/4/rotation = Quaternion(0.08395342, 7.399604e-26, 8.909596e-27, 0.99646974)
-bones/5/rotation = Quaternion(0.00086261914, 6.354221e-26, -1.004307e-27, 0.99999964)
-bones/7/position = Vector3(0.074114166, 0.1441723, -0.0030280459)
-bones/7/rotation = Quaternion(-0.5449118, -0.44427824, 0.5679546, -0.42792004)
-bones/8/rotation = Quaternion(0.574685, 0.21917869, -0.020888714, 0.7882016)
-bones/9/rotation = Quaternion(2.3154007e-07, 1.8018909e-07, 0.14735025, 0.98908436)
-bones/10/rotation = Quaternion(0.016795304, -0.06988904, 0.028964272, 0.9969927)
-bones/25/position = Vector3(-0.0739865, 0.14525323, -0.003892018)
-bones/25/rotation = Quaternion(0.5404412, -0.4498499, 0.5682409, 0.4273881)
-bones/26/rotation = Quaternion(0.5603894, -0.24314326, 0.0005989163, 0.7917353)
-bones/27/rotation = Quaternion(3.707101e-07, -7.281779e-08, -0.18986924, 0.98180944)
-bones/28/rotation = Quaternion(0.039943382, 0.11043464, 0.047569357, 0.99194044)
-bones/73/rotation = Quaternion(-0.0014855084, 6.239732e-26, 3.277508e-27, 0.9999989)
-bones/74/rotation = Quaternion(0.08395342, 6.493319e-26, 1.0209179e-26, 0.99646974)
-bones/75/rotation = Quaternion(0.00086261914, 6.451138e-26, -6.215418e-28, 0.99999964)
-bones/76/position = Vector3(0.07411413, 0.14417231, -0.0030279907)
-bones/76/rotation = Quaternion(-0.54491186, -0.44427827, 0.56795454, -0.42792007)
-bones/77/rotation = Quaternion(0.57468486, 0.21917868, -0.020888718, 0.7882015)
-bones/78/rotation = Quaternion(2.3064786e-07, 1.8783582e-07, 0.14747645, 0.98906565)
-bones/79/position = Vector3(0.21729386, 0.10890334, -0.00868018)
-bones/82/position = Vector3(-0.07398647, 0.14525309, -0.003892025)
-bones/82/rotation = Quaternion(0.5404412, -0.4498499, 0.5682409, 0.4273881)
-bones/83/rotation = Quaternion(0.56038934, -0.24314326, 0.0005988963, 0.7917353)
-bones/84/rotation = Quaternion(3.7675676e-07, -4.405501e-08, -0.1898692, 0.98180944)
-bones/85/position = Vector3(-0.21741562, 0.111320175, -0.011165589)
-bones/123/position = Vector3(0.26081938, 0.8922154, -0.06664345)
-bones/125/position = Vector3(-0.27478552, 0.9009587, -0.042408247)
+[node name="Skeleton3D" parent="Player/Animation personaje/Armature" parent_id_path=PackedInt32Array(1944581078, 1894641677, 1066351533) index="0" unique_id=477590920]
+bones/3/rotation = Quaternion(-0.0006325317, 7.1891637e-26, 5.650249e-27, 0.9999999)
+bones/4/rotation = Quaternion(0.08642497, 4.9183736e-26, 7.656354e-27, 0.99625844)
+bones/5/rotation = Quaternion(0.00044254004, 4.692813e-26, -8.942909e-29, 1)
+bones/7/position = Vector3(0.07193241, 0.14483958, -0.0030472453)
+bones/7/rotation = Quaternion(-0.5478203, -0.44074595, 0.57138187, -0.42327145)
+bones/8/rotation = Quaternion(0.56643546, 0.21989852, -0.019223932, 0.7939937)
+bones/9/rotation = Quaternion(2.2937095e-07, 1.8671565e-07, 0.14712507, 0.9891179)
+bones/10/rotation = Quaternion(0.018775646, -0.072003305, 0.029326562, 0.99679637)
+bones/25/position = Vector3(-0.07194616, 0.1452391, -0.003812489)
+bones/25/rotation = Quaternion(0.54446536, -0.4437065, 0.5735712, 0.42154253)
+bones/26/rotation = Quaternion(0.54930437, -0.24609393, 0.002811561, 0.7985579)
+bones/27/rotation = Quaternion(3.7341675e-07, -6.5861975e-08, -0.18935707, 0.9819083)
+bones/28/rotation = Quaternion(0.041700207, 0.1127684, 0.044476207, 0.9917491)
+bones/73/rotation = Quaternion(-0.0006325317, 6.2400056e-26, 3.2268677e-27, 0.9999999)
+bones/74/rotation = Quaternion(0.08642498, 5.316156e-26, 1.1030697e-26, 0.99625844)
+bones/75/rotation = Quaternion(0.0004425401, 4.789696e-26, 2.8791663e-28, 1)
+bones/76/position = Vector3(0.071932435, 0.14483961, -0.003047246)
+bones/76/rotation = Quaternion(-0.5478203, -0.44074598, 0.5713818, -0.4232714)
+bones/77/rotation = Quaternion(0.5664355, 0.21989848, -0.019223934, 0.7939937)
+bones/78/rotation = Quaternion(2.3220261e-07, 1.8125333e-07, 0.14712508, 0.989118)
+bones/79/position = Vector3(0.2146404, 0.10774247, -0.008907451)
+bones/82/position = Vector3(-0.07194616, 0.1452391, -0.0038124912)
+bones/82/rotation = Quaternion(0.54446536, -0.4437065, 0.5735712, 0.42154253)
+bones/83/rotation = Quaternion(0.54930437, -0.24609394, 0.0028115965, 0.7985579)
+bones/84/rotation = Quaternion(3.7755234e-07, -6.181228e-08, -0.18935707, 0.9819083)
+bones/85/position = Vector3(-0.21449557, 0.108530045, -0.011168472)
+bones/123/position = Vector3(0.26115727, 0.89143693, -0.066053316)
+bones/125/position = Vector3(-0.2750649, 0.8984072, -0.044256993)
 
 [node name="BoneAttachment3D" parent="Player/Animation personaje/Armature/Skeleton3D" index="0" unique_id=2114833904]
-transform = Transform3D(0.12522012, 0.036775764, 0.99144757, 0.14348556, -0.9894783, 0.018580683, 0.9816986, 0.13993175, -0.12917946, -0.27478558, 0.90095925, -0.042368904)
+transform = Transform3D(0.1253178, 0.036715493, 0.9914374, 0.1441311, -0.9893873, 0.018421464, 0.98159146, 0.14058845, -0.12927957, -0.2755148, 0.89806473, -0.04405368)
 
 [node name="BoneAttachment3D2" parent="Player/Animation personaje/Armature/Skeleton3D" index="2" unique_id=26051738]
-transform = Transform3D(0.12522012, 0.036775764, 0.99144757, 0.14348556, -0.9894783, 0.018580683, 0.9816986, 0.13993175, -0.12917946, -0.27478558, 0.90095925, -0.042368904)
+transform = Transform3D(0.1253178, 0.036715493, 0.9914374, 0.1441311, -0.9893873, 0.018421464, 0.98159146, 0.14058845, -0.12927957, -0.2755148, 0.89806473, -0.04405368)
 
 [node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=467969494]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 10.550888, 0)
@@ -94,42 +79,9 @@ light_energy = 8.236
 light_indirect_energy = 3.353
 spot_range = 23.414
 
-[node name="Enemy2" parent="." unique_id=2145062647 instance=ExtResource("1_by3xe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.90205, 0.20928851, -13.053425)
-
-[node name="Sprite3D" parent="Enemy2" index="2" unique_id=2000607842]
-texture = SubResource("ViewportTexture_phjgw")
-
-[node name="Enemy3" parent="." unique_id=226036861 instance=ExtResource("1_by3xe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.681772, 0.20928851, -8.772076)
-
-[node name="Enemy4" parent="." unique_id=627359943 instance=ExtResource("1_by3xe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.315808, 0.20928851, -13.149242)
-
-[node name="Enemy5" parent="." unique_id=1941782794 instance=ExtResource("1_by3xe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.47406912, 0.20928851, -14.968635)
-
-[node name="Enemy6" parent="." unique_id=1248534907 instance=ExtResource("1_by3xe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.621049, 0.20928851, -4.7518535)
-
-[node name="Enemy7" parent="." unique_id=1341924027 instance=ExtResource("1_by3xe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.7579174, 0.20928851, -15.413547)
-
-[node name="Enemy8" parent="." unique_id=953971571 instance=ExtResource("1_by3xe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.670352, 0.20928851, -9.510767)
-
-[node name="Enemy9" parent="." unique_id=663838514 instance=ExtResource("1_by3xe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8757176, 0.20928851, -6.6652126)
-
 [node name="RigidBody3D" parent="." unique_id=2143170203 instance=ExtResource("3_4pysu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.618055, 3.1742842, 0)
 
-[editable path="Enemy"]
-[editable path="Enemy/Personaje con animaciones"]
-[editable path="Enemy/SubViewport"]
 [editable path="Player"]
 [editable path="Player/Animation personaje"]
 [editable path="Player/Animation personaje/Armature/Skeleton3D/BoneAttachment3D2/hacha1"]
-[editable path="Enemy2"]
-[editable path="Enemy2/Personaje con animaciones"]
-[editable path="Enemy2/SubViewport"]

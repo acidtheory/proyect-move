@@ -7,8 +7,13 @@ extends CharacterBody3D
 @onready var _spring_arm := %SpringArm3D as SpringArm3D
 @onready var _knife_model = %"Cuchillo loco"
 @onready var _attack_hitbox_knife := %HitboxKnife
+
 @onready var _attack_hitbox_axe = %HitboxAxe
 @onready var _axe_model = %hacha1
+@export var axe_amount = 2
+
+@onready var _scrap_label = %ScrapLabel
+
 @onready var _mesh : Node3D = $"Animation personaje"
 @onready var _hurt_box = %HurtBox
 @onready var _animation_player = $"Animation personaje/AnimationPlayer"
@@ -72,8 +77,9 @@ func _physics_process(delta: float) -> void:
 		for body in _attack_hitbox_knife.get_overlapping_bodies():
 			if body is Enemy:
 				body.take_damage(25)
-	if Input.is_action_just_pressed("attack") and Input.is_action_pressed("aim") and selected_weapon == 2:
+	if Input.is_action_just_pressed("attack") and Input.is_action_pressed("aim") and selected_weapon == 2 and axe_amount >= 1:
 		create_thrown_axe()
+		axe_amount -= 1
 	if Input.is_action_pressed("aim") and selected_weapon == 2:
 		_aim_start(delta)
 	else:
@@ -115,6 +121,7 @@ func _physics_process(delta: float) -> void:
 func _process(delta: float) -> void:
 	_life_bar.value = current_health
 	_stamina_bar.value = current_stamina
+	_scrap_label.text = "Scraps: " + str(Globals.scrap_amount)
 	if current_stamina >= 30:
 		stamina_cooldown = false
 
@@ -140,7 +147,16 @@ func create_thrown_axe():
 	var axe : RigidBody3D = axe_scene.instantiate()
 	var offset = Vector3(0.7, 1.5, 0)
 	get_parent().add_child(axe)
-	axe.position = position + offset.rotated(Vector3(0,1,0),_camera_pivot.rotation.y)
+	axe.global_position = global_position + offset.rotated(Vector3(0,1,0),_camera_pivot.rotation.y)
 	axe.rotation.y = _camera_pivot.rotation.y
-	axe.apply_central_force(Vector3(0, 20, -900).rotated(Vector3(0, 1, 0),_camera_pivot.rotation.y).rotated(Vector3(1, 0, 0),_camera_pivot.rotation.x))
+	axe.apply_central_impulse(Vector3(0, 1, -15).rotated(Vector3(1, 0, 0),_camera_pivot.rotation.x).rotated(Vector3(0, 1, 0),_camera_pivot.rotation.y))
 	axe.apply_torque(Vector3(-20, 0, 0).rotated(Vector3(0, 1, 0),_camera_pivot.rotation.y))
+
+func take_damage(damage):
+	current_health -= damage
+	if current_health <= 0:
+		current_health = 0
+		die()
+
+func die():
+	queue_free()

@@ -1,6 +1,6 @@
 @icon("res://assets/icons/sequence.svg")
 extends BehaviorNode
-class_name CompositorSequence
+class_name CompositorSequencer
 
 func step() -> Result:
 	for child : BehaviorNode in get_children():
