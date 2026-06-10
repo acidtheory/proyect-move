@@ -12,7 +12,7 @@ size = Vector3(0.2745781, 0.62546253, 0.03540039)
 [sub_resource type="BoxShape3D" id="BoxShape3D_c3s73"]
 size = Vector3(0.7, 0.7, 0.7)
 
-[node name="ThrowableAxe" type="RigidBody3D" unique_id=494095464]
+[node name="ThrowableAxe" type="RigidBody3D" unique_id=494095464 groups=["axe"]]
 script = ExtResource("1_x4bxl")
 
 [node name="hacha1" parent="." unique_id=960700430 instance=ExtResource("1_sy4u1")]
@@ -36,6 +36,7 @@ shape = SubResource("BoxShape3D_x4bxl")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33308068, -0.041149408)
 shape = SubResource("BoxShape3D_c3s73")
 
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
 
 [editable path="hacha1"]

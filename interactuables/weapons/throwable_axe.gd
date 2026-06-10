@@ -5,10 +5,16 @@ extends RigidBody3D
 
 var hitted : bool = false
 
+func _ready():
+	add_to_group("axe")
+	body_entered.connect(_on_hitbox_body_entered)
+	
+
+
 func _physics_process(delta):
 	for body in pickup_area.get_overlapping_bodies():
 		if body is CharacterBody3D and body == Globals.player:
-			if Input.is_action_just_pressed("interact"): 
+			if Input.is_action_just_pressed("interact") and Globals.player.axe_amount < 2: 
 				pickup()
 
 func pickup():

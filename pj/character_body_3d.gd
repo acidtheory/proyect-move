@@ -44,6 +44,8 @@ var is_running : bool
 var stamina_cooldown : bool = false
 var stamina_regen_cooldown : bool = false
 
+var trapped: bool = false
+
 var selected_weapon : int = 1
 
 func _ready() -> void:
@@ -53,41 +55,50 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_end"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	
-	#soft movement
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = jump_velocity
-	if Input.is_action_pressed("run") and Input.is_action_pressed("move_forward") and not Input.is_action_pressed("aim") and not stamina_cooldown and current_stamina > 0:
-		speed = 9
-		current_stamina -= 0.45
-		stamina_regen_cooldown = true
-		if current_stamina <= 0:
-			stamina_cooldown = true
-		is_running = true
+
+	if not trapped:
+		#soft movement
+		if Input.is_action_just_pressed("jump") and is_on_floor():
+			velocity.y = jump_velocity
+		if Input.is_action_pressed("run") and Input.is_action_pressed("move_forward") and not Input.is_action_pressed("aim") and not stamina_cooldown and current_stamina > 0:
+			speed = 9
+			current_stamina -= 0.45
+			stamina_regen_cooldown = true
+			if current_stamina <= 0:
+				stamina_cooldown = true
+			is_running = true
+		else:
+			speed = 5
+			if not stamina_regen_cooldown:
+				current_stamina += 0.38
+			is_running = false
+		current_stamina = clamp(current_stamina, 0, 100)
+		if Input.is_action_just_released("run"):
+			await get_tree().create_timer(1.5).timeout
+			stamina_regen_cooldown = false
+		if Input.is_action_just_pressed("attack") and selected_weapon == 1 and _animation_player.current_animation == "Ataque1":
+			for body in _attack_hitbox_knife.get_overlapping_bodies():
+				if body is Enemy:
+					body.take_damage(25)
+		if Input.is_action_just_pressed("attack") and Input.is_action_pressed("aim") and selected_weapon == 2 and axe_amount >= 1:
+			create_thrown_axe()
+			axe_amount -= 1
+		if Input.is_action_pressed("aim") and selected_weapon == 2:
+			_aim_start(delta)
+		else:
+			_aim_exit(delta)
+		if Input.is_action_just_pressed("weapon_1"):
+			selected_weapon = 1
+		if Input.is_action_just_pressed("weapon_2"):
+			selected_weapon = 2
+		var input_direction := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+		var direction := Vector3(input_direction.x,0,input_direction.y).rotated(Vector3(0,1,0),_camera_pivot.rotation.y)
+		expected_velocity.x = direction.x * speed
+		expected_velocity.z = direction.z * speed
 	else:
-		speed = 5
-		if not stamina_regen_cooldown:
-			current_stamina += 0.38
-		is_running = false
-	current_stamina = clamp(current_stamina, 0, 100)
-	if Input.is_action_just_released("run"):
-		await get_tree().create_timer(1.5).timeout
-		stamina_regen_cooldown = false
-	if Input.is_action_just_pressed("attack") and selected_weapon == 1 and _animation_player.current_animation == "Ataque1":
-		for body in _attack_hitbox_knife.get_overlapping_bodies():
-			if body is Enemy:
-				body.take_damage(25)
-	if Input.is_action_just_pressed("attack") and Input.is_action_pressed("aim") and selected_weapon == 2 and axe_amount >= 1:
-		create_thrown_axe()
-		axe_amount -= 1
-	if Input.is_action_pressed("aim") and selected_weapon == 2:
-		_aim_start(delta)
-	else:
-		_aim_exit(delta)
-	if Input.is_action_just_pressed("weapon_1"):
-		selected_weapon = 1
-	if Input.is_action_just_pressed("weapon_2"):
-		selected_weapon = 2
+		expected_velocity.x = 0
+		expected_velocity.z = 0
+		
 	_axe_model.visible = false
 	_knife_model.visible = false
 	_attack_hitbox_knife.monitoring = false
@@ -102,16 +113,11 @@ func _physics_process(delta: float) -> void:
 			_attack_hitbox_axe.monitoring = true
 			_knife_model.visible = false
 			_attack_hitbox_knife.monitoring = false
-	var input_direction := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
-	var direction := Vector3(input_direction.x,0,input_direction.y).rotated(Vector3(0,1,0),_camera_pivot.rotation.y)
-	_camera_pivot.rotation = _camera_pivot.rotation.move_toward(expected_rotation,delta * camera_weight * _camera_pivot.rotation.distance_to(expected_rotation))
+	_camera_pivot.rotation = _camera_pivot.rotation.move_toward(expected_rotation, delta * camera_weight * _camera_pivot.rotation.distance_to(expected_rotation))
 	if not is_on_floor():
 		velocity.y -= gravity
-	expected_velocity.x = direction.x * speed
-	expected_velocity.z = direction.z * speed
 	expected_velocity.y = velocity.y
 	velocity = velocity.move_toward(expected_velocity, delta * velocity_weight * velocity.distance_to(expected_velocity))
-	#mesh orientation
 	_mesh.global_rotation.y = lerp_angle(_mesh.global_rotation.y, _camera.global_rotation.y + PI, 0.15)
 	_mesh.global_rotation.z = lerp_angle(_mesh.global_rotation.z, _camera.global_rotation.z, 0.15)
 	_hurt_box.global_rotation.y = lerp_angle(_hurt_box.global_rotation.y, _camera.global_rotation.y, 0.15)

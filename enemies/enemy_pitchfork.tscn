@@ -1,13 +1,12 @@
-[gd_scene format=3 uid="uid://b3ejlr2kfhsa4"]
+[gd_scene format=3 uid="uid://c4bjtroh7k83h"]
 
-[ext_resource type="Script" uid="uid://djlelkwgnuaxx" path="res://enemies/enemy_axe.gd" id="1_jennj"]
-[ext_resource type="PackedScene" uid="uid://bvskgl6kwvr07" path="res://enemies/model/Personaje con animaciones.glb" id="2_43lb5"]
-[ext_resource type="PackedScene" uid="uid://duuikg1641sl7" path="res://enemies/life_bar/enemy_life.tscn" id="3_8tr1a"]
-[ext_resource type="Script" uid="uid://qrqoxjtc2rk0" path="res://components/behavior_tree/selector.gd" id="4_65o8c"]
-[ext_resource type="Script" uid="uid://b3xv42ow5hg1r" path="res://components/behavior_tree/leaf_pickup_axe.gd" id="5_bjynw"]
-[ext_resource type="Script" uid="uid://kevyo417oc2g" path="res://components/behavior_tree/leaf_follow_target.gd" id="5_jennj"]
-[ext_resource type="Script" uid="uid://cng85ecnq02ad" path="res://components/behavior_tree/leaf_kill_target.gd" id="6_o83p0"]
-[ext_resource type="Script" uid="uid://3ojrkhu3gkfs" path="res://components/behavior_tree/leaf_throw_axe.gd" id="7_48v8s"]
+[ext_resource type="Script" uid="uid://c1ng2awe7gbii" path="res://enemies/enemy_pitchfork.gd" id="1_hi6k6"]
+[ext_resource type="PackedScene" uid="uid://bvskgl6kwvr07" path="res://enemies/model/Personaje con animaciones.glb" id="2_nkiwf"]
+[ext_resource type="PackedScene" uid="uid://duuikg1641sl7" path="res://enemies/life_bar/enemy_life.tscn" id="3_txqht"]
+[ext_resource type="Script" uid="uid://qrqoxjtc2rk0" path="res://components/behavior_tree/selector.gd" id="4_cakea"]
+[ext_resource type="Script" uid="uid://b3mis6ffohnun" path="res://components/behavior_tree/leaf_charge.gd" id="6_0inl2"]
+[ext_resource type="Script" uid="uid://cng85ecnq02ad" path="res://components/behavior_tree/leaf_kill_target.gd" id="6_rwos2"]
+[ext_resource type="Script" uid="uid://kevyo417oc2g" path="res://components/behavior_tree/leaf_follow_target.gd" id="8_wcyfa"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jfak0"]
 size = Vector3(0.6586151, 1.9577637, 0.36743164)
@@ -19,24 +18,19 @@ albedo_color = Color(1, 1, 1, 0.007843138)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_43lb5"]
 next_pass = SubResource("StandardMaterial3D_8tr1a")
-albedo_color = Color(1, 0, 0, 1)
+albedo_color = Color(0, 0, 1, 1)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_jfak0"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_48v8s"]
-height = 0.3
-radius = 5.5
-
-[node name="AxeEnemy" type="CharacterBody3D" unique_id=715649026 groups=["Enemy"]]
-script = ExtResource("1_jennj")
-throw_cooldown = 6.0
+[node name="PitchforkEnemy" type="CharacterBody3D" unique_id=715649026 groups=["Enemy"]]
+script = ExtResource("1_hi6k6")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1596429113]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00046539307, 0.9686279, -0.016235352)
 shape = SubResource("BoxShape3D_jfak0")
 
-[node name="Personaje con animaciones" parent="." unique_id=562842463 instance=ExtResource("2_43lb5")]
+[node name="Personaje con animaciones" parent="." unique_id=562842463 instance=ExtResource("2_nkiwf")]
 
 [node name="Skeleton3D" parent="Personaje con animaciones/Armature" parent_id_path=PackedInt32Array(562842463, 1949229367) index="0" unique_id=399318282]
 bones/0/position = Vector3(-1.2927853e-11, 1.075811, 0.014604775)
@@ -174,40 +168,30 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2523718, 0)
 billboard = 1
 texture = SubResource("ViewportTexture_jfak0")
 
-[node name="SubViewport" parent="." unique_id=56900519 instance=ExtResource("3_8tr1a")]
+[node name="SubViewport" parent="." unique_id=56900519 instance=ExtResource("3_txqht")]
 
 [node name="CompositorSelector" type="Node" parent="." unique_id=1624268767]
-script = ExtResource("4_65o8c")
+script = ExtResource("4_cakea")
 metadata/_custom_type_script = "uid://qrqoxjtc2rk0"
 
-[node name="LeafPickupAxe" type="Node" parent="CompositorSelector" unique_id=558899583]
-script = ExtResource("5_bjynw")
-metadata/_custom_type_script = "uid://b3xv42ow5hg1r"
-
 [node name="LeafKillTarget" type="Node" parent="CompositorSelector" unique_id=1319875861]
-script = ExtResource("6_o83p0")
+script = ExtResource("6_rwos2")
 is_target_player = true
 damage = 12.5
 attack_range = 1.2
 metadata/_custom_type_script = "uid://cng85ecnq02ad"
 
-[node name="LeafThrowAxe" type="Node" parent="CompositorSelector" unique_id=60850603]
-script = ExtResource("7_48v8s")
-metadata/_custom_type_script = "uid://3ojrkhu3gkfs"
+[node name="LeafCharge" type="Node" parent="CompositorSelector" unique_id=1302675159]
+script = ExtResource("6_0inl2")
+metadata/_custom_type_script = "uid://b3mis6ffohnun"
 
 [node name="LeafFollowTarget" type="Node" parent="CompositorSelector" unique_id=574496903]
-script = ExtResource("5_jennj")
+script = ExtResource("8_wcyfa")
 is_target_player = true
 target_distance = 2.0
 metadata/_custom_type_script = "uid://kevyo417oc2g"
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1739851241]
-
-[node name="AxeDetection" type="Area3D" parent="." unique_id=1845339472]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="AxeDetection" unique_id=1881336341]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.13775301, 0)
-shape = SubResource("CylinderShape3D_48v8s")
 
 [editable path="Personaje con animaciones"]
 [editable path="SubViewport"]

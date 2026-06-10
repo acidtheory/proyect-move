@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dhmv0uuc0okel"]
+
+[ext_resource type="Script" uid="uid://clsmwwv5cxxq0" path="res://floor_trap.gd" id="1_q758g"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f1k8e"]
+size = Vector3(1.5, 1, 1.5)
+
+[sub_resource type="PrismMesh" id="PrismMesh_aqhau"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eov3f"]
+albedo_color = Color(1, 0, 0, 1)
+
+[node name="FloorTrap" type="Area3D" unique_id=1087649761]
+script = ExtResource("1_q758g")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1624238710]
+shape = SubResource("BoxShape3D_f1k8e")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1447117349]
+mesh = SubResource("PrismMesh_aqhau")
+surface_material_override/0 = SubResource("StandardMaterial3D_eov3f")

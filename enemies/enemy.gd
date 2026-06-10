@@ -11,6 +11,7 @@ class_name Enemy
 
 var player : Node3D = null
 var state: String = "idle" 
+var override_look: bool = false
 
 @onready var nav = $NavigationAgent3D as NavigationAgent3D
 @onready var life_bar = $SubViewport/EnemyLifeBar
@@ -31,7 +32,7 @@ func _physics_process(delta: float) -> void:
 	for child in get_children():
 		if child is BehaviorNode:
 			child.step()
-	if player:
+	if player and not override_look:
 		var look_target = Vector3(player.global_position.x, global_position.y, player.global_position.z)
 		if global_position.distance_to(look_target) > 0.1:
 			look_at(look_target)
