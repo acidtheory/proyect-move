@@ -28,7 +28,7 @@ func _escape():
 	_player_trapped = false
 	Globals.player.trapped = false
 	Globals.player.speed = slow_speed
-	queue_free()  
+	queue_free()
 	await get_tree().create_timer(slow_duration).timeout
 	if is_instance_valid(Globals.player): 
 		Globals.player.speed = 5.0
