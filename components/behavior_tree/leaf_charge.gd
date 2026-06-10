@@ -2,8 +2,8 @@ extends Leaf
 class_name LeafCharge
 
 @export var charge_range: float = 6.0
-@export var windup_time: float = 1   # congela antes de cargar
-@export var recovery_time: float = 2 # congela después de cargar
+@export var windup_time: float = 1
+@export var recovery_time: float = 2 
 @export var charge_speed: float = 12.0
 
 enum State { IDLE, WINDUP, CHARGING, RECOVERY }
