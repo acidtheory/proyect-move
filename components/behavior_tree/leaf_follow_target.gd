@@ -17,4 +17,4 @@ func step() -> Result:
 		return Result.SUCCESS
 	var direction := npc.global_position.direction_to(npc.nav.get_next_path_position())
 	npc.velocity = Vector3(direction.x * npc.speed, npc.velocity.y, direction.z * npc.speed)
-	return Result.WAIT
+	return Result.RUNNING

@@ -1,10 +1,9 @@
-extends CharacterBody3D
+extends NPC
 
 class_name Enemy
 
 @export var speed = 2
 @export var gravity : float = 10
-@export var health = 100
 
 @export var detection_range : float
 @export var attack_range : float
@@ -13,7 +12,6 @@ var player : Node3D = null
 var state: String = "idle" 
 var override_look: bool = false
 
-@onready var nav = $NavigationAgent3D as NavigationAgent3D
 @onready var life_bar = $SubViewport/EnemyLifeBar
 
 
@@ -41,8 +39,3 @@ func _physics_process(delta: float) -> void:
 
 func _process(delta: float) -> void:
 	life_bar.value = health
-
-func take_damage(damage):
-	health -= damage
-	if health <= 0:
-		queue_free()

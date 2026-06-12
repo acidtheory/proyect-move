@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://btcasuxejncv1"]
 
 [ext_resource type="PackedScene" uid="uid://b3ejlr2kfhsa4" path="res://enemies/enemy_axe.tscn" id="1_4pysu"]
-[ext_resource type="PackedScene" uid="uid://b1anhhy354wpl" path="res://pj/character_body_3d.tscn" id="1_8nbwm"]
 [ext_resource type="PackedScene" uid="uid://beprgylmpcfkh" path="res://interactuables/scrap.tscn" id="3_4pysu"]
 [ext_resource type="PackedScene" uid="uid://dhmv0uuc0okel" path="res://interactuables/floor_trap.tscn" id="4_phjgw"]
 [ext_resource type="PackedScene" uid="uid://c4bjtroh7k83h" path="res://enemies/enemy_pitchfork.tscn" id="5_ab322"]
+[ext_resource type="PackedScene" uid="uid://c62b65p2kf5dq" path="res://components/pawns/player/player.tscn" id="5_ty26i"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_4pysu"]
 vertices = PackedVector3Array(-19.5, 0.75, -19.5, -19.5, 0.75, 19.5, 19.5, 0.75, 19.5, 19.5, 0.75, -19.5)
@@ -18,6 +18,19 @@ albedo_color = Color(0.17254902, 0.13333334, 0.1764706, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_by3xe"]
 material = SubResource("StandardMaterial3D_4pysu")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1yfuo"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_ej0ts"]
+sky_material = SubResource("ProceduralSkyMaterial_1yfuo")
+
+[sub_resource type="Environment" id="Environment_681g7"]
+background_mode = 2
+sky = SubResource("Sky_ej0ts")
+tonemap_mode = 2
+glow_enabled = true
 
 [node name="ToyBox" type="Node3D" unique_id=304246059]
 
@@ -36,45 +49,6 @@ mesh = SubResource("BoxMesh_by3xe")
 [node name="AxeEnemy" parent="." unique_id=715649026 instance=ExtResource("1_4pysu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.757578, 0.9267173, -10.546936)
 
-[node name="Player" parent="." unique_id=1944581078 instance=ExtResource("1_8nbwm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.23838973, 0)
-
-[node name="Skeleton3D" parent="Player/Animation personaje/Armature" parent_id_path=PackedInt32Array(1944581078, 1894641677, 1066351533) index="0" unique_id=477590920]
-bones/3/rotation = Quaternion(-0.00047889358, 7.189212e-26, 5.641126e-27, 0.9999999)
-bones/4/rotation = Quaternion(0.086650625, 3.6358257e-26, -2.3994732e-27, 0.99623877)
-bones/5/rotation = Quaternion(0.00017480536, 6.441778e-26, 3.1208965e-28, 1)
-bones/7/position = Vector3(0.07173324, 0.14490065, -0.0030490018)
-bones/7/rotation = Quaternion(-0.54769415, -0.44090083, 0.57123244, -0.423475)
-bones/8/rotation = Quaternion(0.5667973, 0.21986754, -0.019298645, 0.7937422)
-bones/9/rotation = Quaternion(2.3137818e-07, 1.8147693e-07, 0.14735718, 0.98908335)
-bones/10/rotation = Quaternion(0.018913528, -0.072150275, 0.029354962, 0.9967823)
-bones/25/position = Vector3(-0.07199167, 0.14523958, -0.0038142442)
-bones/25/rotation = Quaternion(0.5438122, -0.44471458, 0.57270485, 0.42250016)
-bones/26/rotation = Quaternion(0.55143476, -0.24494901, 0.0015227649, 0.7974443)
-bones/27/rotation = Quaternion(3.761416e-07, -7.4680436e-08, -0.18718603, 0.98232454)
-bones/28/rotation = Quaternion(0.041528277, 0.11230501, 0.043377843, 0.9918575)
-bones/73/rotation = Quaternion(-0.00047889358, 6.240054e-26, 3.2177453e-27, 0.9999999)
-bones/74/rotation = Quaternion(0.086650625, 5.3025776e-26, 9.219032e-28, 0.99623877)
-bones/75/rotation = Quaternion(0.00017480533, 6.5384896e-26, 6.6204694e-28, 1)
-bones/76/position = Vector3(0.07173323, 0.14490065, -0.003049002)
-bones/76/rotation = Quaternion(-0.5476941, -0.44090095, 0.5712325, -0.42347497)
-bones/77/rotation = Quaternion(0.5667974, 0.21986753, -0.01929863, 0.79374224)
-bones/78/rotation = Quaternion(2.3172231e-07, 1.8857803e-07, 0.14742185, 0.9890737)
-bones/79/position = Vector3(0.21439745, 0.10763651, -0.008928275)
-bones/82/position = Vector3(-0.07199167, 0.14523958, -0.0038142528)
-bones/82/rotation = Quaternion(0.5438122, -0.44471458, 0.57270485, 0.42250016)
-bones/83/rotation = Quaternion(0.5514348, -0.244949, 0.0015227797, 0.7974442)
-bones/84/rotation = Quaternion(3.7539667e-07, -6.2844116e-08, -0.18718602, 0.98232454)
-bones/85/position = Vector3(-0.21470636, 0.10872855, -0.011168705)
-bones/123/position = Vector3(0.26125038, 0.8912225, -0.06589063)
-bones/125/position = Vector3(-0.27508432, 0.89823025, -0.0443851)
-
-[node name="BoneAttachment3D" parent="Player/Animation personaje/Armature/Skeleton3D" index="0" unique_id=2114833904]
-transform = Transform3D(0.12533033, 0.03697864, 0.991426, 0.14442173, -0.98934066, 0.018644005, 0.98154724, 0.1408468, -0.12933491, -0.27506268, 0.8982397, -0.043965705)
-
-[node name="BoneAttachment3D2" parent="Player/Animation personaje/Armature/Skeleton3D" index="2" unique_id=26051738]
-transform = Transform3D(0.12533033, 0.03697864, 0.991426, 0.14442173, -0.98934066, 0.018644005, 0.98154724, 0.1408468, -0.12933491, -0.27506268, 0.8982397, -0.043965705)
-
 [node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=467969494]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 10.550888, 0)
 light_energy = 8.236
@@ -90,6 +64,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0590286, 0.74999905, 13.81
 [node name="PitchforkEnemy" parent="." unique_id=126906449 instance=ExtResource("5_ab322")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7132063, 0.2592887, -14.2988825)
 
-[editable path="Player"]
-[editable path="Player/Animation personaje"]
-[editable path="Player/Animation personaje/Armature/Skeleton3D/BoneAttachment3D2/hacha1"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=71908880]
+environment = SubResource("Environment_681g7")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=587014284]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." unique_id=936416609 instance=ExtResource("5_ty26i")]
