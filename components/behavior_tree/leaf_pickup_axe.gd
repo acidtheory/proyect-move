@@ -32,7 +32,7 @@ func step() -> Result:
 		var look_target = Vector3(closest_axe.global_position.x, npc.global_position.y, closest_axe.global_position.z)
 		npc.look_at(look_target)
 		npc.rotation.y += PI
-		return Result.WAIT
+		return Result.RUNNING
 
 	npc.velocity.x = 0
 	npc.velocity.z = 0
@@ -44,4 +44,4 @@ func step() -> Result:
 		npc.axe_count += 1
 		return Result.SUCCESS
 
-	return Result.WAIT
+	return Result.RUNNING

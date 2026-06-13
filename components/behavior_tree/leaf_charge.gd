@@ -52,4 +52,4 @@ func step() -> Result:
 				_state = State.IDLE
 				return Result.SUCCESS
 
-	return Result.WAIT
+	return Result.RUNNING

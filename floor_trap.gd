@@ -22,7 +22,7 @@ func _on_body_entered(body):
 	if body == Globals.player and not _player_trapped:
 		_player_trapped = true
 		_press_count = 0
-		Globals.player.trapped = true
+		Globals.player.movement.trapped = true
 
 func _escape():
 	_player_trapped = false
