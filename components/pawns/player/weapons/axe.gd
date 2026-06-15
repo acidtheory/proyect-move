@@ -6,7 +6,8 @@ func aim_start():
 	camera.expected_offset = Vector2(1,1)
 
 func aim_attack():
-	create_thrown_axe()
+	if player.axe_amount > 0:
+		create_thrown_axe()
 
 const axe_scene = preload("res://interactuables/weapons/throwable_axe.tscn")
 func create_thrown_axe():

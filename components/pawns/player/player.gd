@@ -7,6 +7,7 @@ class_name Player
 @onready var camera = $Camera
 @onready var weapon_manager = $WeaponManager
 
+var axe_amount : int = 3
 
 func _ready():
 	Globals.player = self
