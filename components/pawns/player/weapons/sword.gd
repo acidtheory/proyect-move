@@ -15,7 +15,7 @@ func attack():
 
 func _on_body_entered(body : Node3D):
 	if body is NPC:
-		body.take_damage(30)
+		body.take_damage(30, player.global_position)
 
 func end():
 	sword_area.disconnect("body_entered", _on_body_entered)

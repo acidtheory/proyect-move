@@ -230,4 +230,17 @@ sword_area = NodePath("../../PlayerMesh/Armature/Skeleton3D/BoneAttachment3D/Cuc
 [node name="Axe" type="Node" parent="WeaponManager" unique_id=1259311212]
 script = ExtResource("9_rmd83")
 
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=356310538]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1909645217]
+offset_right = 245.0
+offset_bottom = 87.0
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/MarginContainer" unique_id=1016106747]
+layout_mode = 2
+
 [editable path="PlayerMesh"]

@@ -9,6 +9,13 @@ class_name LeafKillTarget
 
 var _timer: float = 0.0
 
+func _ready():
+	if owner is NPC:
+		owner.took_damage.connect(_on_took_damage)
+
+func _on_took_damage():
+	_timer = attack_cooldown
+
 func step() -> Result:
 	if not is_target_player:
 		if not target:
@@ -18,11 +25,11 @@ func step() -> Result:
 
 	var dist = (owner as Enemy).global_position.distance_to(target.global_position)
 	if dist > attack_range:
-		return Result.FAILURE  # ← lejos: el Selector prueba el siguiente hijo
+		return Result.FAILURE
 
 	_timer -= get_physics_process_delta_time()
 	if _timer <= 0.0:
-		target.take_damage(damage)
+		target.take_damage(damage, (owner as Enemy).global_position)
 		_timer = attack_cooldown
 
 	return Result.SUCCESS
