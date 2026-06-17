@@ -1,9 +1,7 @@
 [gd_scene format=3 uid="uid://btcasuxejncv1"]
 
-[ext_resource type="PackedScene" uid="uid://b3ejlr2kfhsa4" path="res://enemies/enemy_axe.tscn" id="1_4pysu"]
 [ext_resource type="PackedScene" uid="uid://beprgylmpcfkh" path="res://interactuables/scrap.tscn" id="3_4pysu"]
 [ext_resource type="PackedScene" uid="uid://dhmv0uuc0okel" path="res://interactuables/floor_trap.tscn" id="4_phjgw"]
-[ext_resource type="PackedScene" uid="uid://c4bjtroh7k83h" path="res://enemies/enemy_pitchfork.tscn" id="5_ab322"]
 [ext_resource type="PackedScene" uid="uid://c62b65p2kf5dq" path="res://components/pawns/player/player.tscn" id="5_ty26i"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_4pysu"]
@@ -46,9 +44,6 @@ shape = SubResource("BoxShape3D_8nbwm")
 transform = Transform3D(40, 0, 0, 0, 0.4, 0, 0, 0, 40, 0, 0, 0)
 mesh = SubResource("BoxMesh_by3xe")
 
-[node name="AxeEnemy" parent="." unique_id=715649026 instance=ExtResource("1_4pysu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.757578, 0.9267173, -10.546936)
-
 [node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=467969494]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 10.550888, 0)
 light_energy = 8.236
@@ -60,9 +55,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.618055, 3.1742842, 0)
 
 [node name="FloorTrap" parent="." unique_id=1087649761 instance=ExtResource("4_phjgw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0590286, 0.74999905, 13.811616)
-
-[node name="PitchforkEnemy" parent="." unique_id=126906449 instance=ExtResource("5_ab322")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7132063, 0.2592887, -14.2988825)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=71908880]
 environment = SubResource("Environment_681g7")

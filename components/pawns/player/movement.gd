@@ -6,10 +6,18 @@ class_name MovementManager
 @onready var weapon_manager = $"../WeaponManager"
 @onready var mesh : Node3D = $"../PlayerMesh"
 
-@export var jump_impulse : float = 10
-@export var walk_speed : float = 10
-@export var run_speed : float = 20
+@export var jump_impulse : float = 6
+@export var walk_speed : float = 5
+@export var run_speed : float = 8
 @export_range(1,30) var slipperiness : float = 30
+
+@export_group("Dash")
+@export var dash_speed : float = 25.0
+@export var dash_duration : float = 0.2
+@export var dash_cooldown : float = 0.6
+
+var _dash_cooldown_timer : float = 0.0
+var _dash_direction : Vector3
 
 #running
 var is_running = false
@@ -20,6 +28,9 @@ var trapped = false # no hice nada con esto todavia
 var expected_velocity : Vector3
 
 func _physics_process(delta):
+	if _dash_cooldown_timer > 0:
+		_dash_cooldown_timer -= delta
+	_process_dash_input()
 	_process_cosmetic(delta)
 	_process_player_jump()
 	_process_player_run(delta)
@@ -40,11 +51,16 @@ func _process_player_run(_delta : float):
 		return
 
 func _process_player_velocity(delta : float):
+	if is_dashing:
+		expected_velocity = _dash_direction * dash_speed
+		expected_velocity.y = player.velocity.y
+		player.velocity = player.velocity.move_toward(expected_velocity, delta * slipperiness * player.velocity.distance_to(expected_velocity))
+		return
 	if weapon_manager.is_attacking:
-		player.velocity = Vector3(0,player.velocity.y,0)
+		player.velocity = Vector3(0, player.velocity.y, 0)
 		return
 	var input_direction : Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
-	var direction := Vector3(input_direction.x,0,input_direction.y).rotated(Vector3(0,1,0),spring.rotation.y)
+	var direction := Vector3(input_direction.x, 0, input_direction.y).rotated(Vector3(0, 1, 0), spring.rotation.y)
 	expected_velocity = Vector3(direction.x * get_speed(), player.velocity.y, direction.z * get_speed())
 	player.velocity = player.velocity.move_toward(expected_velocity, delta * slipperiness * player.velocity.distance_to(expected_velocity))
 
@@ -59,6 +75,23 @@ func _process_cosmetic(delta : float):
 
 # dash
 var is_dashing : bool
+
+func _process_dash_input():
+	# Si apreta Alt, no está atacando, no está ya dasheando y tiene el cooldown listo
+	if Input.is_action_just_pressed("dash") and not is_dashing and not weapon_manager.is_attacking and _dash_cooldown_timer <= 0:
+		perform_dash()
+func perform_dash():
+	is_dashing = true
+	player.invulnerable = true
+	var input_direction : Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	if input_direction != Vector2.ZERO:
+		_dash_direction = Vector3(input_direction.x, 0, input_direction.y).rotated(Vector3(0, 1, 0), spring.rotation.y).normalized()
+	else:
+		_dash_direction = -mesh.global_transform.basis.z.normalized()
+	await get_tree().create_timer(dash_duration).timeout
+	is_dashing = false
+	player.invulnerable = false
+	_dash_cooldown_timer = dash_cooldown
 
 func get_speed():
 	if is_running:

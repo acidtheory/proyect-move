@@ -3,7 +3,7 @@ extends Weapon
 
 func aim_start():
 	camera.expected_length = 1
-	camera.expected_offset = Vector2(1,1)
+	camera.expected_offset = Vector2(1, 0.4)
 
 func aim_attack():
 	if player.axe_amount > 0:

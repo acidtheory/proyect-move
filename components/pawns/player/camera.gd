@@ -3,10 +3,10 @@ class_name CameraManager
 
 var expected_rotation : Vector3
 var expected_length : float = 2
-var expected_offset : Vector2 = Vector2(0,0)
+var expected_offset : Vector2 = Vector2(0, 0)
 @export var default_length : float = 2
 @export var default_offset : Vector2 = Vector2(2,0)
-@export_range(1,30) var slipperiness : float = 30
+@export_range(1,30) var slipperiness : float = 16
 @onready var spring : SpringArm3D = $"../SpringArm3D"
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
