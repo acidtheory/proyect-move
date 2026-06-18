@@ -10797,7 +10797,7 @@ anim = NodePath("PlayerMesh/AnimationPlayer")
 
 [node name="PlayerMesh" parent="." unique_id=558761329 instance=ExtResource("2_v0xwp")]
 
-[node name="Skeleton3D" parent="PlayerMesh/Armature" parent_id_path=PackedInt32Array(558761329, 2096451552) index="0" unique_id=907867663]
+[node name="Skeleton3D" parent="PlayerMesh/Armature" parent_id_path=PackedInt32Array(558761329, 900937919) index="0" unique_id=509475916]
 bones/0/position = Vector3(-0.026494969, 1.0532008, 0.0017033536)
 bones/0/rotation = Quaternion(0.04202648, -0.18671153, -0.047463186, 0.98036724)
 bones/1/position = Vector3(0.0018928277, 0.106508695, -0.06624643)
@@ -10968,11 +10968,11 @@ unique_name_in_owner = true
 transform = Transform3D(1.0000037, 0.0006587878, -0.00061160326, -0.00065906346, 1.0000002, -5.0857663e-05, 0.00061020255, 5.1379204e-05, 1.0000044, -1.486558, -0.18660426, 0.043156028)
 shape = SubResource("BoxShape3D_engsh")
 
-[node name="cuchi loco" parent="PlayerMesh" index="2" unique_id=581359579]
+[node name="cuchi loco" parent="PlayerMesh" index="2" unique_id=1866298444]
 transform = Transform3D(-0.3067238, 0.9495438, -0.065468386, -0.63200843, -0.15175585, 0.7599572, 0.7116776, 0.27447355, 0.6466673, -0.58099157, 1.3112522, -0.008180913)
 visible = false
 
-[node name="AnimationPlayer" parent="PlayerMesh" index="3" unique_id=1104471299]
+[node name="AnimationPlayer" parent="PlayerMesh" index="3" unique_id=300469766]
 libraries/ = SubResource("AnimationLibrary_qxox0")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=165164992]

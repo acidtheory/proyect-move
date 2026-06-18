@@ -188,7 +188,7 @@ metadata/_custom_type_script = "uid://b3xv42ow5hg1r"
 script = ExtResource("6_o83p0")
 is_target_player = true
 damage = 12.5
-attack_range = 1.2
+attack_range = 1.0
 metadata/_custom_type_script = "uid://cng85ecnq02ad"
 
 [node name="LeafThrowAxe" type="Node" parent="CompositorSelector" unique_id=60850603]

@@ -5,11 +5,16 @@ class_name MovementManager
 @onready var spring : SpringArm3D = $"../SpringArm3D"
 @onready var weapon_manager = $"../WeaponManager"
 @onready var mesh : Node3D = $"../PlayerMesh"
+@onready var collision_shape : CollisionShape3D = $"../CollisionShape3D"
 
 @export var jump_impulse : float = 6
 @export var walk_speed : float = 5
 @export var run_speed : float = 8
 @export_range(1,30) var slipperiness : float = 30
+
+@export var crouch_speed : float = 4.0
+var is_crouching : bool = false
+var was_crouching : bool = false 
 
 @export_group("Dash")
 @export var dash_speed : float = 25.0
@@ -22,7 +27,7 @@ var _dash_direction : Vector3
 #running
 var is_running = false
 var is_aiming = false
-var trapped = false # no hice nada con esto todavia
+var trapped = false 
 
 #move smoothing
 var expected_velocity : Vector3
@@ -33,6 +38,7 @@ func _physics_process(delta):
 	_process_dash_input()
 	_process_cosmetic(delta)
 	_process_player_jump()
+	_process_player_crouch(delta)
 	_process_player_run(delta)
 	_process_player_velocity(delta)
 	player.move_and_slide()
@@ -56,6 +62,11 @@ func _process_player_velocity(delta : float):
 		expected_velocity.y = player.velocity.y
 		player.velocity = player.velocity.move_toward(expected_velocity, delta * slipperiness * player.velocity.distance_to(expected_velocity))
 		return
+	if trapped:
+		expected_velocity = Vector3.ZERO
+		expected_velocity.y = player.velocity.y 
+		player.velocity = player.velocity.move_toward(expected_velocity, delta * slipperiness * 10)
+		return
 	if weapon_manager.is_attacking:
 		player.velocity = Vector3(0, player.velocity.y, 0)
 		return
@@ -66,18 +77,43 @@ func _process_player_velocity(delta : float):
 
 func _process_cosmetic(delta : float):
 	mesh.global_rotation.y = lerp_angle(mesh.global_rotation.y, spring.global_rotation.y + PI, 9.0 * delta)
+	if weapon_manager.is_attacking or not player.is_on_floor():
+		was_crouching = is_crouching
+		return
+	var anim : AnimationPlayer = player.anim
+	var cur_anim = anim.current_animation
+	var is_moving = Vector2(player.velocity.x, player.velocity.z).length() > 0.1 
+	if is_crouching:
+		if is_moving:
+			anim.play("Crouch_walk", 0.2) 
+		else:
+			if not was_crouching and cur_anim != "Crouch":
+				anim.play("Crouch", 0.1)
+				anim.queue("Crouch_idle")
+			elif cur_anim != "Crouch" and cur_anim != "Crouch_idle":
+				anim.play("Crouch_idle", 0.2)
+	else:
+		if is_moving:
+			anim.play("Run" if is_running else "Walk", 0.2)
+		else:
+			anim.play("Idle", 0.25) 
+	was_crouching = is_crouching
+
+#crouch
+func _process_player_crouch(delta: float):
+	if Input.is_action_pressed("crouch") and player.is_on_floor() and not is_dashing and not weapon_manager.is_attacking:
+		is_crouching = true
+	else:
+		is_crouching = false
+	var target_height = 1.0 if is_crouching else 2.0
+	collision_shape.shape.height = move_toward(collision_shape.shape.height, target_height, delta * 10.0)
 	
-	if not weapon_manager.is_attacking and player.is_on_floor():
-		if Vector2(player.velocity.x,player.velocity.z).length() > 0:
-			if is_running: player.anim.play("Run")
-			else: player.anim.play("Walk")
-		else: player.anim.play("Idle")
+	collision_shape.position.y = collision_shape.shape.height / 2.0
 
 # dash
 var is_dashing : bool
 
 func _process_dash_input():
-	# Si apreta Alt, no está atacando, no está ya dasheando y tiene el cooldown listo
 	if Input.is_action_just_pressed("dash") and not is_dashing and not weapon_manager.is_attacking and _dash_cooldown_timer <= 0:
 		perform_dash()
 func perform_dash():
@@ -94,6 +130,8 @@ func perform_dash():
 	_dash_cooldown_timer = dash_cooldown
 
 func get_speed():
+	if is_crouching:
+		return crouch_speed
 	if is_running:
 		return run_speed
 	return walk_speed

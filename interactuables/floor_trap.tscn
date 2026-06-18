@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dhmv0uuc0okel"]
 
-[ext_resource type="Script" uid="uid://clsmwwv5cxxq0" path="res://floor_trap.gd" id="1_q758g"]
+[ext_resource type="Script" uid="uid://clsmwwv5cxxq0" path="res://interactuables/floor_trap.gd" id="1_q758g"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_f1k8e"]
 size = Vector3(1.5, 1, 1.5)

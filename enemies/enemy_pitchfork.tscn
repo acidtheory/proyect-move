@@ -4,8 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://bvskgl6kwvr07" path="res://enemies/model/Personaje con animaciones.glb" id="2_nkiwf"]
 [ext_resource type="PackedScene" uid="uid://duuikg1641sl7" path="res://enemies/life_bar/enemy_life.tscn" id="3_txqht"]
 [ext_resource type="Script" uid="uid://qrqoxjtc2rk0" path="res://components/behavior_tree/selector.gd" id="4_cakea"]
-[ext_resource type="Script" uid="uid://b3mis6ffohnun" path="res://components/behavior_tree/leaf_charge.gd" id="6_0inl2"]
-[ext_resource type="Script" uid="uid://cng85ecnq02ad" path="res://components/behavior_tree/leaf_kill_target.gd" id="6_rwos2"]
+[ext_resource type="Script" uid="uid://brhuhwpu4eqhw" path="res://components/behavior_tree/leaf_pitchfork_basic.gd" id="5_0inl2"]
+[ext_resource type="Script" uid="uid://duhq41dkdbulo" path="res://components/behavior_tree/leaf_pitchfork_charge.gd" id="6_m8rhq"]
 [ext_resource type="Script" uid="uid://kevyo417oc2g" path="res://components/behavior_tree/leaf_follow_target.gd" id="8_wcyfa"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jfak0"]
@@ -25,6 +25,7 @@ viewport_path = NodePath("SubViewport")
 
 [node name="PitchforkEnemy" type="CharacterBody3D" unique_id=715649026 groups=["Enemy"]]
 script = ExtResource("1_hi6k6")
+detection_range = 10.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1596429113]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00046539307, 0.9686279, -0.016235352)
@@ -32,7 +33,7 @@ shape = SubResource("BoxShape3D_jfak0")
 
 [node name="Personaje con animaciones" parent="." unique_id=562842463 instance=ExtResource("2_nkiwf")]
 
-[node name="Skeleton3D" parent="Personaje con animaciones/Armature" parent_id_path=PackedInt32Array(562842463, 1707949963) index="0" unique_id=1495776762]
+[node name="Skeleton3D" parent="Personaje con animaciones/Armature" parent_id_path=PackedInt32Array(562842463, 1958940531) index="0" unique_id=340864062]
 bones/0/position = Vector3(-1.2927853e-11, 1.075811, 0.014604775)
 bones/0/rotation = Quaternion(-3.768593e-08, -3.1786513e-08, 8.845539e-12, 1)
 bones/1/position = Vector3(-1.2100373e-09, 0.10798304, -0.019096855)
@@ -160,7 +161,7 @@ bones/124/rotation = Quaternion(-0.25290126, 0.014320892, 0.002153807, 0.9673837
 bones/125/position = Vector3(-0.25928175, 0.8906845, -0.047811083)
 bones/125/rotation = Quaternion(0.8514768, 0.06520608, 0.5049807, 0.12541945)
 
-[node name="Personaje" parent="Personaje con animaciones/Armature/Skeleton3D" index="0" unique_id=1410692523]
+[node name="Personaje" parent="Personaje con animaciones/Armature/Skeleton3D" index="0" unique_id=2119375131]
 surface_material_override/0 = SubResource("StandardMaterial3D_43lb5")
 
 [node name="Sprite3D" type="Sprite3D" parent="." unique_id=2000607842]
@@ -174,21 +175,21 @@ texture = SubResource("ViewportTexture_jfak0")
 script = ExtResource("4_cakea")
 metadata/_custom_type_script = "uid://qrqoxjtc2rk0"
 
-[node name="LeafKillTarget" type="Node" parent="CompositorSelector" unique_id=1319875861]
-script = ExtResource("6_rwos2")
-is_target_player = true
-damage = 12.5
-attack_range = 1.2
-metadata/_custom_type_script = "uid://cng85ecnq02ad"
+[node name="LeafPitchforkBasic" type="Node" parent="CompositorSelector" unique_id=807889055]
+script = ExtResource("5_0inl2")
+attack_range = 1.4
+metadata/_custom_type_script = "uid://brhuhwpu4eqhw"
 
-[node name="LeafCharge" type="Node" parent="CompositorSelector" unique_id=1302675159]
-script = ExtResource("6_0inl2")
-metadata/_custom_type_script = "uid://b3mis6ffohnun"
+[node name="LeafPitchforkCharge" type="Node" parent="CompositorSelector" unique_id=1044561306]
+script = ExtResource("6_m8rhq")
+min_charge_range = 4.0
+max_charge_range = 7.0
+metadata/_custom_type_script = "uid://duhq41dkdbulo"
 
 [node name="LeafFollowTarget" type="Node" parent="CompositorSelector" unique_id=574496903]
 script = ExtResource("8_wcyfa")
 is_target_player = true
-target_distance = 2.0
+target_distance = 1.9
 metadata/_custom_type_script = "uid://kevyo417oc2g"
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1739851241]
