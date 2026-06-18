@@ -24,6 +24,14 @@ var was_crouching : bool = false
 var _dash_cooldown_timer : float = 0.0
 var _dash_direction : Vector3
 
+@export_group("Knockback")
+@export var knockback_force : float = 9.0
+@export var knockback_duration : float = 0.25
+
+var _knockback_timer : float = 0.0
+var _knockback_dir : Vector3
+var _current_knockback_force : float = 0.0
+
 #running
 var is_running = false
 var is_aiming = false
@@ -57,15 +65,21 @@ func _process_player_run(_delta : float):
 		return
 
 func _process_player_velocity(delta : float):
-	if is_dashing:
-		expected_velocity = _dash_direction * dash_speed
+	if _knockback_timer > 0:
+		_knockback_timer -= delta
+		expected_velocity = _knockback_dir * _current_knockback_force
 		expected_velocity.y = player.velocity.y
-		player.velocity = player.velocity.move_toward(expected_velocity, delta * slipperiness * player.velocity.distance_to(expected_velocity))
+		player.velocity = player.velocity.move_toward(expected_velocity, delta * slipperiness * 10)
 		return
 	if trapped:
 		expected_velocity = Vector3.ZERO
 		expected_velocity.y = player.velocity.y 
 		player.velocity = player.velocity.move_toward(expected_velocity, delta * slipperiness * 10)
+		return
+	if is_dashing:
+		expected_velocity = _dash_direction * dash_speed
+		expected_velocity.y = player.velocity.y
+		player.velocity = player.velocity.move_toward(expected_velocity, delta * slipperiness * player.velocity.distance_to(expected_velocity))
 		return
 	if weapon_manager.is_attacking:
 		player.velocity = Vector3(0, player.velocity.y, 0)
@@ -135,3 +149,10 @@ func get_speed():
 	if is_running:
 		return run_speed
 	return walk_speed
+
+func apply_knockback(attacker_pos: Vector3, mult: float = 1.0):
+	_knockback_timer = knockback_duration
+	_knockback_dir = player.global_position.direction_to(attacker_pos) * -1
+	_knockback_dir.y = 0 
+	_knockback_dir = _knockback_dir.normalized()
+	_current_knockback_force = knockback_force * mult

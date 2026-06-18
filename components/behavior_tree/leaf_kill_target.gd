@@ -6,6 +6,7 @@ class_name LeafKillTarget
 @export var damage: float = 10.0
 @export var attack_cooldown: float = 1.0
 @export var attack_range: float = 1.5
+@export var knockback_multiplier: float = 0.5
 
 var _timer: float = 0.0
 

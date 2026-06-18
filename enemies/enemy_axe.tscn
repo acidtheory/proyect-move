@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://qrqoxjtc2rk0" path="res://components/behavior_tree/selector.gd" id="4_65o8c"]
 [ext_resource type="Script" uid="uid://b3xv42ow5hg1r" path="res://components/behavior_tree/leaf_pickup_axe.gd" id="5_bjynw"]
 [ext_resource type="Script" uid="uid://kevyo417oc2g" path="res://components/behavior_tree/leaf_follow_target.gd" id="5_jennj"]
-[ext_resource type="Script" uid="uid://cng85ecnq02ad" path="res://components/behavior_tree/leaf_kill_target.gd" id="6_o83p0"]
+[ext_resource type="Script" uid="uid://kw6ht13t422m" path="res://components/behavior_tree/leaf_axe_combo.gd" id="5_pdswd"]
 [ext_resource type="Script" uid="uid://3ojrkhu3gkfs" path="res://components/behavior_tree/leaf_throw_axe.gd" id="7_48v8s"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jfak0"]
@@ -29,8 +29,11 @@ height = 0.3
 radius = 5.5
 
 [node name="AxeEnemy" type="CharacterBody3D" unique_id=715649026 groups=["Enemy"]]
+collision_layer = 2
 script = ExtResource("1_jennj")
 throw_cooldown = 6.0
+thrown_axe_damage = 20.0
+detection_range = 10.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1596429113]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00046539307, 0.9686279, -0.016235352)
@@ -38,7 +41,7 @@ shape = SubResource("BoxShape3D_jfak0")
 
 [node name="Personaje con animaciones" parent="." unique_id=562842463 instance=ExtResource("2_43lb5")]
 
-[node name="Skeleton3D" parent="Personaje con animaciones/Armature" parent_id_path=PackedInt32Array(562842463, 1958940531) index="0" unique_id=340864062]
+[node name="Skeleton3D" parent="Personaje con animaciones/Armature" parent_id_path=PackedInt32Array(562842463, 814075178) index="0" unique_id=1788492365]
 bones/0/position = Vector3(-1.2927853e-11, 1.075811, 0.014604775)
 bones/0/rotation = Quaternion(-3.768593e-08, -3.1786513e-08, 8.845539e-12, 1)
 bones/1/position = Vector3(-1.2100373e-09, 0.10798304, -0.019096855)
@@ -166,7 +169,7 @@ bones/124/rotation = Quaternion(-0.25290126, 0.014320892, 0.002153807, 0.9673837
 bones/125/position = Vector3(-0.25928175, 0.8906845, -0.047811083)
 bones/125/rotation = Quaternion(0.8514768, 0.06520608, 0.5049807, 0.12541945)
 
-[node name="Personaje" parent="Personaje con animaciones/Armature/Skeleton3D" index="0" unique_id=2119375131]
+[node name="Personaje" parent="Personaje con animaciones/Armature/Skeleton3D" index="0" unique_id=1996687716]
 surface_material_override/0 = SubResource("StandardMaterial3D_43lb5")
 
 [node name="Sprite3D" type="Sprite3D" parent="." unique_id=2000607842]
@@ -180,20 +183,22 @@ texture = SubResource("ViewportTexture_jfak0")
 script = ExtResource("4_65o8c")
 metadata/_custom_type_script = "uid://qrqoxjtc2rk0"
 
-[node name="LeafPickupAxe" type="Node" parent="CompositorSelector" unique_id=558899583]
-script = ExtResource("5_bjynw")
-metadata/_custom_type_script = "uid://b3xv42ow5hg1r"
-
-[node name="LeafKillTarget" type="Node" parent="CompositorSelector" unique_id=1319875861]
-script = ExtResource("6_o83p0")
-is_target_player = true
-damage = 12.5
-attack_range = 1.0
-metadata/_custom_type_script = "uid://cng85ecnq02ad"
+[node name="LeafAxeCombo" type="Node" parent="CompositorSelector" unique_id=39585522]
+script = ExtResource("5_pdswd")
+attack_range = 1.2
+damage = 7.0
+time_between_hits = 0.4
+knockback_multiplier = 0.05
+metadata/_custom_type_script = "uid://kw6ht13t422m"
 
 [node name="LeafThrowAxe" type="Node" parent="CompositorSelector" unique_id=60850603]
 script = ExtResource("7_48v8s")
+max_throw_range = 10.0
 metadata/_custom_type_script = "uid://3ojrkhu3gkfs"
+
+[node name="LeafPickupAxe" type="Node" parent="CompositorSelector" unique_id=558899583]
+script = ExtResource("5_bjynw")
+metadata/_custom_type_script = "uid://b3xv42ow5hg1r"
 
 [node name="LeafFollowTarget" type="Node" parent="CompositorSelector" unique_id=574496903]
 script = ExtResource("5_jennj")

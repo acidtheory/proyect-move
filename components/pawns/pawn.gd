@@ -18,6 +18,6 @@ func _physics_process(delta):
 func die():
 	queue_free()
 
-func take_damage(damage : float, attacker_pos : Vector3 = Vector3.ZERO):
+func take_damage(damage : float, attacker_pos : Vector3 = Vector3.ZERO, knockback_mult : float = 1.0):
 	if not invulnerable:
 		health -= damage

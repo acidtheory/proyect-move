@@ -7,6 +7,7 @@ class_name LeafPitchforkCharge
 @export var damage: float = 50.0
 @export var windup_time: float = 1.0
 @export var vulnerability_time: float = 1.0
+@export var knockback_multiplier: float = 1.5
 
 var _internal_state = "idle"
 var _timer: float = 0.0
@@ -67,8 +68,8 @@ func step() -> Result:
 			npc.velocity.z = _charge_dir.z * charge_speed
 			_timer -= get_physics_process_delta_time()
 
-			if dist <= 1.5:
-				target.take_damage(damage, npc.global_position)
+			if dist <= 1:
+				target.take_damage(damage, npc.global_position, knockback_multiplier)
 				_internal_state = "vulnerable"
 				_timer = vulnerability_time
 				npc.velocity.x = 0

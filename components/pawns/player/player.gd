@@ -8,7 +8,7 @@ class_name Player
 @onready var weapon_manager = $WeaponManager
 @onready var life_bar = $CanvasLayer/MarginContainer/ProgressBar 
 
-var axe_amount : int = 3
+var axe_amount : int = 999
 
 var _heal_delay_timer : float = 0.0
 var _heal_tick_timer : float = 0.0
@@ -36,9 +36,11 @@ func _process(delta: float) -> void:
 		_heal_delay_timer = 0.0
 		_heal_tick_timer = 3.0 
 
-func take_damage(damage: float, attacker_pos: Vector3 = Vector3.ZERO):
-	super.take_damage(damage, attacker_pos)
+func take_damage(damage: float, attacker_pos: Vector3 = Vector3.ZERO, knockback_mult: float = 1.0):
+	super.take_damage(damage, attacker_pos, knockback_mult)
+	
 	_heal_delay_timer = 0.0
 	_heal_tick_timer = 3.0
-	if health > 0 and attacker_pos != Vector3.ZERO:
-		movement.apply_knockback(attacker_pos)
+	
+	if health > 0 and attacker_pos != Vector3.ZERO and knockback_mult > 0.0:
+		movement.apply_knockback(attacker_pos, knockback_mult)

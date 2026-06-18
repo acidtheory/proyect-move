@@ -14,12 +14,12 @@ func step() -> Result:
 	var axe_detector = npc.get_node("AxeDetection") as Area3D
 	var closest_axe = null
 	var closest_dist = INF
-	for body in axe_detector.get_overlapping_bodies():
-		if body is RigidBody3D and body.is_in_group("axe"):
+	for body in axe_detector.get_overlapping_areas():
+		if body is Area3D and body.is_in_group("axe"):
 			var dist = npc.global_position.distance_to(body.global_position)
 			if dist < closest_dist:
 				closest_dist = dist
-				closest_axe = body
+				closest_axe = body.get_parent()
 
 	if not closest_axe:
 		return Result.FAILURE
