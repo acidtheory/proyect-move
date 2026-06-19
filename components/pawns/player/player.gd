@@ -13,6 +13,9 @@ var axe_amount : int = 999
 var _heal_delay_timer : float = 0.0
 var _heal_tick_timer : float = 0.0
 
+func decir_hola():
+	print("hola")
+
 func _ready():
 	Globals.player = self
 	
